@@ -2,19 +2,39 @@
 
 void INTR_Init()
 {
-	
-    //TMOD = 0x11;
-		TMOD = 0x12;
-		
-		// TIMER0
-		TH0 = US_100;
-		TL0 = US_100;
     EA = 1;
+    TMOD = 0x00;
+#if (TIMER0_16_MODE)
+    TMOD |= TIMER0_16_MASK;
+#else
+    TMOD |= TIMER0_8_AUTOLOAD_MASK;
+#endif  // TIMER0 mode
+
+#if (TIMER0_COUNTER_MODE)
+    TMOD |= TIMER0_COUNTER_MODE_MASK;
+#endif  // TIMER0
+
+#if (TIMER1_16_MODE)
+    TMOD |= TIMER1_16_MASK;
+#else
+    TMOD |= TIMER1_8_AUTOLOAD_MASK;
+#endif  // TIMER1 mode
+
+#if (TIMER1_COUNTER_MODE)
+    TMOD |= TIMER1_COUNTER_MODE_MASK;
+#endif  // TIMER1
+
+#if (USE_TIMER0)
     ET0 = 1;
     TR0 = 1;
-		// TIMER1
-		ET1 = 1;
-		TR1 = 1;
-		TH1 = MS_50_H;
-		TL1 = MS_50_L;
+    TH0 = TIMER0_H;
+    TL0 = TIMER0_L;
+#endif  // USE_TIMER0
+
+#if (USE_TIMER1)
+    ET1 = 1;
+    TR1 = 1;
+    TH1 = TIMER1_H;
+    TL1 = TIMER1_L;
+#endif  // USE_TIMER1
 }

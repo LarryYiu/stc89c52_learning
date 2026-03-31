@@ -1,13 +1,11 @@
 #include "DigitalTube.h"
 
-DIGIT_MASK code DIGIT_MASK_BY_INDEX[11] = {
-    DIGIT_0, DIGIT_1, DIGIT_2, DIGIT_3, DIGIT_4,     DIGIT_5,
-    DIGIT_6, DIGIT_7, DIGIT_8, DIGIT_9, DIGIT_MINUS,
-};
+static SEGMENT_MASK code DIGIT_MASK_BY_INDEX[11] = {
+    DIGIT_0, DIGIT_1, DIGIT_2, DIGIT_3, DIGIT_4,    DIGIT_5,
+    DIGIT_6, DIGIT_7, DIGIT_8, DIGIT_9, DIGIT_MINUS};
 
-TUBE_MASK code TUBE_MASK_BY_INDEX[6] = {
-    TUBE_0, TUBE_1, TUBE_2, TUBE_3, TUBE_4, TUBE_5,
-};
+static TUBE_MASK code TUBE_MASK_BY_INDEX[6] = {TUBE_0, TUBE_1, TUBE_2,
+                                               TUBE_3, TUBE_4, TUBE_5};
 
 void DT_Init(bool cascaded)
 {
@@ -39,26 +37,7 @@ void DT_ClearGhosting()
     DT_Latch_Ctl(DIGIT_LATCH, true);
 }
 
-uint8_t Process32(uint32_t numIn, uint8_t* dat)
-{
-    uint8_t index = 0;
-
-    if (numIn == 0)
-    {
-        dat[index++] = 0;
-        return index;
-    }
-
-    while (numIn > 0)
-    {
-        dat[index++] = numIn % 10;
-        numIn /= 10;
-    }
-
-    return index;
-}
-
-void DT_DisplaySingle(DIGIT_MASK digit, TUBE_MASK tube, bool withDP)
+void DT_DisplaySingle(SEGMENT_MASK digit, TUBE_MASK tube, bool withDP)
 {
     if (digit == DIGIT_CLEAR)
     {
@@ -69,21 +48,21 @@ void DT_DisplaySingle(DIGIT_MASK digit, TUBE_MASK tube, bool withDP)
     DT_Latch_Ctl(TUBE_LATCH, true);
     __DT_PORT__ = withDP ? (digit | DIGIT_DP) : digit;
     DT_Latch_Ctl(DIGIT_LATCH, true);
-    DelayMsLowAcc(1);
+    // DelayMsLowAcc(1);
 }
 
-#if (!DT_USE_ADVANCED_FUNCTIONS)
-void DT_DisplayMulti(const uint8_t* dat, const uint8_t* len, uint8_t dp,
+#if (!DT_USE_FLOAT)
+void DT_DisplayMulti(const uint8_t* dat, const uint8_t* len, int8_t dp,
                      bool alignRight)
 {
-    uint8_t i;
+    int8_t i;
     // DT_Init(true);
     if (alignRight)
     {
         for (i = 0; i < *len; i++)
         {
             DT_DisplaySingle(DIGIT_MASK_BY_INDEX[dat[i]],
-                             TUBE_MASK_BY_INDEX[6 - i - 1], i == dp);
+                             TUBE_MASK_BY_INDEX[NUM_TUBE - i - 1], i == dp);
         }
     }
     else
@@ -120,19 +99,17 @@ uint8_t DT_ProcessInt(const int16_t numIn, uint8_t* dat)
     return index;
 }
 #else
-void DT_DisplayMulti(const DT_Data_t* dat, uint8_t len)
+void DT_DisplayMulti(const DT_Data_t* dat, uint8_t len) {}
+#endif  // !DT_USE_FLOAT
+
+#if (DT_USE_ERROR)
+void DT_Error()
 {
-    uint8_t i;
-    // DT_Init(true);
-    for (i = 0; i < len; i++)
+    uint8_t len = 3;
+    uint8_t dat[len] = {DIGIT_E, DIGIT_r, DIGIT_r};
+    while (1)
     {
-        DT_DisplaySingle(dat[i].digit, dat[i].tube, dat[i].withDP);
+        DT_DisplayMulti(dat, &len, -1, false);
     }
 }
-
-void DT_DisplayInt(const float* num)
-{
-    // To be implemented
-}
-
-#endif  // !DT_USE_ADVANCED_FUNCTIONS
+#endif  // DT_USE_ERROR

@@ -18,6 +18,16 @@ typedef signed long int32_t;
 #define INT32_MIN -2147483648
 #define INT32_MAX_DIGITS 10
 
+#define MS_1_H ((65536 - 922) / 256)
+#define MS_1_L ((65536 - 922) % 256)
+#define MS_50_H ((65536 - 46083) / 256)
+#define MS_50_L ((65536 - 46083) % 256)
+#define MS_25_H ((65536 - 23045) / 256)
+#define MS_25_L ((65536 - 23045) % 256)
+#define MS_COUNTER_H ((65536 - 1) / 256)
+#define MS_COUNTER_L ((65536 - 1) % 256)
+#define US_100 (256 - 108)
+
 #define true 1
 #define false 0
 #define HIGH 1

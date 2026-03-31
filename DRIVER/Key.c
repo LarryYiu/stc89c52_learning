@@ -1,6 +1,7 @@
 #include "Key.h"
 
-uint8_t ListenStandaloneKey_Busy(uint8_t* keyNum)
+#if (KEY_USE_BUSY_WAITING)
+bool KEY_ScanStandalone_Busy(uint8_t* keyNum)
 {
     if (!P34)
     {
@@ -34,7 +35,7 @@ uint8_t ListenStandaloneKey_Busy(uint8_t* keyNum)
     return false;
 }
 
-uint8_t ListenMatrixKey_Busy(uint8_t* keyNum)
+bool KEY_ScanMatrix_Busy(uint8_t* keyNum)
 {
     P3 = 0xfe;
     if (P3 != 0xfe)
@@ -133,21 +134,13 @@ uint8_t ListenMatrixKey_Busy(uint8_t* keyNum)
     }
     return false;
 }
+#else
+bool KEY_ScanStandalone(Key_t* key)
+{
+    // Implementation for non-busy-waiting scanning (e.g., using interrupts or
+    // state machines) This is a placeholder and should be implemented based on
+    // the specific requirements of the project.
+    return false;
+}
 
-// uint8_t ListenDuoKey_Busy(uint8_t* keyNum)
-// {
-//     if (!P34)
-//     {
-//         DelayMsLowAcc(10);
-//         if (!P35)
-//         {
-//             DelayMsLowAcc(10);
-//             while (!P34 && !P35)
-//             {
-//                 *keyNum = 22;
-//                 return 22;
-//             }
-//         }
-//     }
-//     return *keyNum;
-// }
+#endif  // KEY_USE_BUSY_WAITING

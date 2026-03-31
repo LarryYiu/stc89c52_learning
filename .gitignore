@@ -1,5 +1,6 @@
 # Keil uVision project files
-**.uv*
+**.uvgui*
+**.uvopt
 
 # Build output folders
 Listings/
