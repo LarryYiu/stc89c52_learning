@@ -1,0 +1,12 @@
+# Keil uVision project files
+**.uv*
+
+# Build output folders
+Listings/
+Objects/
+
+# VS Code
+.vscode/
+
+# Clang format config
+.clang-format
