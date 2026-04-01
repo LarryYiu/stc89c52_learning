@@ -135,6 +135,81 @@ bool KEY_ScanMatrix_Busy(uint8_t* keyNum)
     return false;
 }
 #else
+
+unsigned char ReadKeyRaw(unsigned char i)
+{
+    switch (i)
+    {
+        case 0:
+            return KEY1;
+        case 1:
+            return KEY2;
+        case 2:
+            return KEY3;
+        case 3:
+            return KEY4;
+    }
+    return 1;
+}
+
+void KeyScan(Key_t* keys)
+{
+    uint8_t i;
+
+    for (i = 0; i < 4; i++)
+    {
+        uint8_t key = ReadKeyRaw(i);
+
+        switch (keys[i].state)
+        {
+            case KEY_IDLE:
+                if (key == 0)  // pressed (active low)
+                {
+                    keys[i].state = KEY_PRESS_DETECT;
+                    keys[i].count = 0;
+                }
+                break;
+
+            case KEY_PRESS_DETECT:
+                if (key == 0)
+                {
+                    if (++keys[i].count >= 2)  // debounce ~20ms
+                    {
+                        keys[i].state = KEY_PRESSED;
+                        keys[i].pressed = 1;  // event!
+                    }
+                }
+                else
+                {
+                    keys[i].state = KEY_IDLE;
+                }
+                break;
+
+            case KEY_PRESSED:
+                if (key == 1)
+                {
+                    keys[i].state = KEY_RELEASE_DETECT;
+                    keys[i].count = 0;
+                }
+                break;
+
+            case KEY_RELEASE_DETECT:
+                if (key == 1)
+                {
+                    if (++keys[i].count >= 2)
+                    {
+                        keys[i].state = KEY_IDLE;
+                    }
+                }
+                else
+                {
+                    keys[i].state = KEY_PRESSED;
+                }
+                break;
+        }
+    }
+}
+
 bool KEY_ScanStandalone(Key_t* key)
 {
     // Implementation for non-busy-waiting scanning (e.g., using interrupts or

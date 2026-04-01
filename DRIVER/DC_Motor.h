@@ -6,7 +6,9 @@
 #include "Utility.h"
 #include "config.h"
 
+#ifndef __DC_MOTOR_PIN__
 #define __DC_MOTOR_PIN__ P17
+#endif  // __DC_MOTOR_PIN__
 
 #ifndef DC_MOTOR_ACTIVE_HIGH
 #define DC_MOTOR_ACTIVE_HIGH true

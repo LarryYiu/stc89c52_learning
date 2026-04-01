@@ -1,3 +1,13 @@
+/*
+ * @file: dc_motor_breathing_pwm.c
+ * @brief: This code is an example of controlling a DC motor using Pulse Width
+ * Modulation (PWM) with an STC89C52 microcontroller. The goal is to add a
+ * breath effect to the motor speed, which means that the speed will gradually
+ * increase and decrease in a smooth manner, creating a breathing-like effect.
+ *
+ * Keys are used to adjust the breathing interval.
+ */
+
 #include <STC89C5xRC.H>
 #include <stdio.h>
 
@@ -8,21 +18,12 @@
 #include "Utility.h"
 #include "config.h"
 
-/*
- * This code is an example of controlling a DC motor using Pulse Width
- * Modulation (PWM) with an STC89C52 microcontroller. The goal is to add a
- * breath effect to the motor speed, which means that the speed will gradually
- * increase and decrease in a smooth manner, creating a breathing-like effect.
- *
- * Keys are used to adjust the breathing interval.
- */
-
 uint8_t pulseWidth =
     5;  // variable represents the pulse width of the PWM signal, which is used
         // to control the speed of the DC motor. The value can be adjusted to
         // increase or decrease the duty cycle of the PWM signal, which in turn
         // affects the speed of the motor.
-uint8_t intervalOffset =
+uint8_t divisionOffset =
     0;  // variable repsents the time offset of the pulse width, which is used
         // to adjust the duty cycle of the PWM signal
 uint8_t timer1counter =
@@ -37,14 +38,14 @@ bool isRisingPW =
 
 /*
  * Divide a cycle of PWM into 10 intervals, and turn on the motor when the
- * current intervalOffset is less than the pulse width threshold (pulseWidth).
+ * current divisionOffset is less than the pulse width threshold (pulseWidth).
  */
 void Timer0() interrupt 1
 {
-    intervalOffset++;
-    if (intervalOffset >= 10)
-        intervalOffset = 0;
-    if (intervalOffset < pulseWidth)
+    divisionOffset++;
+    if (divisionOffset >= 10)
+        divisionOffset = 0;
+    if (divisionOffset < pulseWidth)
     {
         DC_MOTOR_On();
     }
@@ -66,7 +67,7 @@ void Timer0() interrupt 1
  * will add 500ms to the cycle length.
  *
  */
-void timer1() interrupt 3
+void Timer1() interrupt 3
 {
     TH1 = MS_25_H;
     TL1 = MS_25_L;
