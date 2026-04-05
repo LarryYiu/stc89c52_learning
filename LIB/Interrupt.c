@@ -2,7 +2,9 @@
 
 void INTR_Init()
 {
+#if (USE_INTERRUPT)
     EA = 1;
+#endif  // USE_INTERRUPT
     TMOD = 0x00;
 #if (TIMER0_16_MODE)
     TMOD |= TIMER0_16_MASK;

@@ -36,7 +36,8 @@ uint8_t divisionOffset =
         // interrupt and reset after reaching SERVO_NUM_DIVISION_TOTAL.
 bit receivedCompleteFlag = false;  // This flag is set to true when a complete
                                    // string is received via UART.
-char receivedSting[10];  // This buffer is used to store the characters received
+char
+    receivedString[10];  // This buffer is used to store the characters received
                          // via UART until a complete string is formed.
 uint8_t receivedLen = 0;  // This variable is used to keep track of the length
                           // of the received string.
@@ -92,7 +93,7 @@ void Timer1() interrupt 3
 
 /**
  * @brief This interrupt service routine is triggered when a new character is
- * received via UART. It stores the received character in the receivedSting
+ * received via UART. It stores the received character in the receivedString
  * buffer and resets the timer1counter to determine the end of the string.
  */
 void Uart() interrupt 4
@@ -102,7 +103,7 @@ void Uart() interrupt 4
         RI = 0;
         if (!receivedCompleteFlag)
         {
-            receivedSting[receivedLen++] = SBUF;
+            receivedString[receivedLen++] = SBUF;
             timer1counter = 0;  // reset timer1counter every time a new
                                 // character is received
         }
@@ -128,7 +129,7 @@ void main()
         DT_DisplayMulti(dat, &len, -1, true);
         if (receivedCompleteFlag)
         {
-            int16_t degree = atoi(receivedSting);
+            int16_t degree = atoi(receivedString);
             uint8_t i;
             if (degree > 180)
                 degree = 180;
@@ -144,7 +145,7 @@ void main()
             len = DT_ProcessInt(pulseWidth, dat);
             for (i = 0; i < receivedLen; i++)
             {
-                receivedSting[i] = 0;
+                receivedString[i] = 0;
             }
             receivedLen = 0;
             receivedCompleteFlag = false;

@@ -1,6 +1,7 @@
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 
+#define USE_INTERRUPT 1
 #define USE_TIMER0 1
 #define USE_TIMER1 1
 #define TIMER0_16_MODE 0

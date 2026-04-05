@@ -30,3 +30,13 @@ void DelayMsLowAcc(uint16_t ms)
     uint32_t duration = ms * MS_MULTIPLIER;
     for (; duration > 0; duration--);
 }
+// DelayUsLowAcc(1); //5
+// DelayUsLowAcc(2); //6
+// DelayUsLowAcc(5); //11
+// DelayUsLowAcc(10); //19
+// DelayUsLowAcc(20); //35
+// DelayUsLowAcc(30); //51
+// DelayUsLowAcc(50); //83
+// DelayUsLowAcc(100); //163
+// DelayUsLowAcc(200); //323
+void DelayUsLowAcc(uint8_t us) { while (us--); }

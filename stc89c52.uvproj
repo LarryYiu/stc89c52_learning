@@ -397,24 +397,24 @@
           <GroupName>DRIVER</GroupName>
           <Files>
             <File>
-              <FileName>StepMotor.c</FileName>
+              <FileName>Key.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\DRIVER\StepMotor.c</FilePath>
+              <FilePath>.\DRIVER\Key.c</FilePath>
+            </File>
+            <File>
+              <FileName>DS18B20.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\DRIVER\DS18B20.c</FilePath>
+            </File>
+            <File>
+              <FileName>MatrixLed.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\DRIVER\MatrixLed.c</FilePath>
             </File>
             <File>
               <FileName>Uart.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\DRIVER\Uart.c</FilePath>
-            </File>
-            <File>
-              <FileName>DigitalTube.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\DRIVER\DigitalTube.c</FilePath>
-            </File>
-            <File>
-              <FileName>Servo.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\DRIVER\Servo.c</FilePath>
             </File>
           </Files>
         </Group>

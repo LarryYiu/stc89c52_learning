@@ -6,9 +6,21 @@
 #include "Utility.h"
 #include "config.h"
 
+#ifndef DT_DEBUG
+#define DT_DEBUG false
+#endif  // DT_DEBUG
+
+#if (DT_DEBUG)
+#include <stdio.h>
+#endif  // DT_DEBUG
+
 #ifndef DT_USE_FLOAT
 #define DT_USE_FLOAT false
 #endif  // DT_USE_FLOAT
+#ifndef DT_USE_FLOAT_FAKE_APPROACH
+#define DT_USE_FLOAT_FAKE_APPROACH true
+#endif  // DT_USE_FLOAT_FAKE_APPROACH
+
 #ifndef DT_USE_ERROR
 #define DT_USE_ERROR false
 #endif  // DT_USE_ERROR
@@ -100,13 +112,6 @@ typedef enum
 #endif  // ACTIVE_LOW
 } TUBE_MASK;
 
-typedef struct
-{
-    SEGMENT_MASK digit;
-    TUBE_MASK tube;
-    bool withDP;
-} DT_Data_t;
-
 /**
  * @brief Initialize or reset the digital tubes. If cascaded is true, the latch
  * control will be set to OFF (unlock) state.
@@ -146,7 +151,6 @@ void DT_ClearGhosting();
  */
 void DT_DisplaySingle(SEGMENT_MASK digit, TUBE_MASK tube, bool withDP);
 
-#if (!DT_USE_FLOAT)
 /**
  * @brief Display multiple digits on the digital tubes with an optional decimal
  * point and alignment.
@@ -177,8 +181,20 @@ void DT_DisplayMulti(const uint8_t* dat, const uint8_t* len, int8_t dp,
  * input number is zero, it will store the index for zero in the dat array.
  */
 uint8_t DT_ProcessInt(const int16_t numIn, uint8_t* dat);
+#if (DT_USE_FLOAT)
+#if (DT_USE_FLOAT_FAKE_APPROACH)
+uint8_t DT_ProcessFloat(const float numIn, uint8_t* dat);
+void DT_DisplayFloat(const uint8_t* dat, uint8_t* len, bool alignRight);
 #else
-void DT_DisplayMulti(const DT_Data_t* dat, uint8_t len);
+typedef struct
+{
+    SEGMENT_MASK digit;
+    TUBE_MASK tube;
+    bool withDP;
+} DT_Data_t;
+uint8_t DT_ProcessFloat(const float numIn, DT_Data_t* dat);
+void DT_DisplayFloat(const DT_Data_t* dat, uint8_t len);
+#endif  // DT_USE_FLOAT_FAKE_APPROACH
 #endif  // DT_USE_FLOAT
 
 #if (DT_USE_ERROR)

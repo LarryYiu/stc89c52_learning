@@ -5,6 +5,10 @@
 #include "Utility.h"
 #include "config.h"
 
+#ifndef USE_INTERRUPT
+#define USE_INTERRUPT 0
+#endif  // USE_INTERRUPT
+
 #ifndef USE_TIMER0
 #define USE_TIMER0 1
 #endif  // USE_TIMER0

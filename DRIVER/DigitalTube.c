@@ -51,7 +51,6 @@ void DT_DisplaySingle(SEGMENT_MASK digit, TUBE_MASK tube, bool withDP)
     // DelayMsLowAcc(1);
 }
 
-#if (!DT_USE_FLOAT)
 void DT_DisplayMulti(const uint8_t* dat, const uint8_t* len, int8_t dp,
                      bool alignRight)
 {
@@ -98,9 +97,61 @@ uint8_t DT_ProcessInt(const int16_t numIn, uint8_t* dat)
     }
     return index;
 }
+#if (DT_USE_FLOAT)
+#if (DT_USE_FLOAT_FAKE_APPROACH)
+uint8_t DT_ProcessFloat(const float numIn, uint8_t* dat)
+{
+    bool isNegative = numIn < 0;
+
+    int32_t xdata numInt = (int32_t)(numIn * 100);
+    uint8_t index = 0;
+    uint8_t dec = 0;
+    if (numIn == 0)
+    {
+        dat[index++] = 0;
+        return index;
+    }
+
+    if (isNegative)
+    {
+        numInt = -numInt;
+    }
+    dec = numInt % 100;
+    numInt /= 100;
+
+    dat[index++] = dec % 10;
+    dat[index++] = dec / 10;
+    while (numInt > 0)
+    {
+        if (index >= 6)
+        {
+#if (DT_DEBUG)
+            printf(
+                "Warning: Number too large to display, truncating to fit.\r\n");
+#endif  // DT_DEBUG
+
+            return index;
+        }
+        dat[index++] = numInt % 10;
+        numInt /= 10;
+    }
+
+    if (isNegative)
+    {
+        dat[index++] = 10;  // DIGIT_MINUS index
+    }
+    return index;
+}
+
+void DT_DisplayFloat(const uint8_t* dat, uint8_t* len, bool alignRight)
+{
+    DT_DisplayMulti(dat, len, 2, alignRight);
+}
 #else
-void DT_DisplayMulti(const DT_Data_t* dat, uint8_t len) {}
-#endif  // !DT_USE_FLOAT
+uint8_t DT_ProcessFloat(const float numIn, DT_Data_t* dat, ) {}
+void DT_DisplayFloat(const DT_Data_t* dat, uint8_t len) {}
+#endif  // DT_USE_FLOAT_FAKE_APPROACH
+#endif  // DT_USE_FLOAT
 
 #if (DT_USE_ERROR)
 void DT_Error()
