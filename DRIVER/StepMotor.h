@@ -50,11 +50,29 @@ typedef struct
     bool ccw;
 } StepMotor;
 
+/**
+ * @brief Initialize the step motor. This function should be called before any
+ * other step motor operations.
+ */
 void StepMotor_Init(StepMotor* motor);
 
+/**
+ * @brief Step the motor in the clockwise direction. This function will update
+ * the step index and set the motor control pins accordingly.
+ */
 void StepMotor_StepCW(StepMotor* motor);
+
+/**
+ * @brief Step the motor in the counter-clockwise direction. This function will
+ * update the step index and set the motor control pins accordingly.
+ */
 void StepMotor_StepCCW(StepMotor* motor);
 
+/**
+ * @brief A wrapper handles the motor rotation based on the current direction
+ * (clockwise or counter-clockwise). This function will call the appropriate
+ * stepping function based on the motor's current direction.
+ */
 void StepMotor_HandleRotation(StepMotor* motor);
 
 #endif  // __STEPMOTOR_H__

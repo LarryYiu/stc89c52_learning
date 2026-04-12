@@ -1,3 +1,13 @@
+/**
+ * @brief Traffic Light Controller Example
+ * This example demonstrates a traffic light controller using the STC89C5xRC
+ * microcontroller. It utilizes two timers: Timer0 for managing the traffic
+ * light countdown and Timer1 for handling the blinking of the LEDs. The system
+ * also includes a maintenance mode that can be toggled using buttons connected
+ * to the microcontroller.
+ *
+ * for more details, see the description.md file in the project folder.
+ */
 #include <STC89C5xRC.H>
 #include <stdio.h>
 

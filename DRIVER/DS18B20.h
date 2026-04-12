@@ -26,12 +26,36 @@
 #define DEBUG_DS18B20 0
 #endif  // DEBUG_DS18B20
 
+/**
+ * @brief perform a handshake with the DS18B20 according to the datasheet, and
+ * wait for the DS18B20 to response with a presence pulse.
+ */
 void DS18B20_Handshake();
 
+/**
+ * @brief read a byte from the DS18B20, the caller must perform a handshake and
+ * send the read command before calling this function.
+ */
 uint8_t DS18B20_ReadByte();
 
+/**
+ * @brief write a byte to the DS18B20, the caller must perform a handshake and
+ * send the write command before calling this function.
+ *
+ * @param dat the byte to be written to the DS18B20
+ */
 void DS18B20_WriteByte(uint8_t dat);
 
+/**
+ * @brief read the temperature from the DS18B20, integrated with the handshake
+ * and command sending process. The caller can directly call this function to
+ * get the raw temperature data without worrying about the communication
+ * details.
+ *
+ * @return int16_t the raw temperature data read from the DS18B20, which can be
+ * converted to Celsius by multiplying it with DS18B20_TEMP_COEF (default is
+ * 0.0625).
+ */
 int16_t DS18B20_ReadTemperature();
 
 #endif  // __DS18B20_H__

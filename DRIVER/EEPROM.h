@@ -57,15 +57,80 @@
 #define EEPROM_ADDRESS_END \
     (EEPROM_ADDRESS + EEPROM_SECTOR_SIZE * EEPROM_SIZE - 1)
 
+/**
+ * @brief Set the EEPROM to idle mode. This function will disable the
+ * ISP/IAP/EEPROM function, clear the command and trigger registers, and reset
+ * the address registers to prevent misuse.
+ *
+ * @note It should be called after each EEPROM operation to ensure the EEPROM is
+ * in a known state and to prevent accidental writes to the EEPROM.
+ */
 void EEPROM_Idle();
+
+/**
+ * @brief Trigger the EEPROM operation. This function will send the required
+ * trigger commands to the ISP_TRIG register to start the EEPROM operation.
+ * If EEPROM_FREEZE_INTERRUPT is set to 1, it will also disable global
+ * interrupts before sending the trigger commands, and re-enable them after the
+ * operation is done.
+ */
 void EEPROM_Trigger();
+
+/**
+ * @brief Read a byte from the EEPROM at the specified address.
+ *
+ * @param addr The address to read from.
+ * @return The byte read from the specified address.
+ */
 uint8_t EEPROM_ReadByte(uint16_t addr);
+
+/**
+ * @brief Write a byte to the EEPROM at the specified address.
+ *
+ * @param addr The address to write to.
+ * @param dat The byte to write to the specified address.
+ * @return true if the write operation was successful, false if the address was
+ * invalid.
+ */
 bool EEPROM_WriteByte(uint16_t addr, uint8_t dat);
+
+/**
+ * @brief Erase a sector of the EEPROM at the specified address.
+ *
+ * @param addr The address of the sector to erase.
+ * @return true if the erase operation was successful, false if the address was
+ * invalid.
+
+ */
 bool EEPROM_EraseSector(uint16_t addr);
 
 #if (EEPROM_ENABLE_GETTERS)
+/**
+ * @brief Get the EEPROM address corresponding to the given sector and index.
+ *
+ * @param sec The sector number (0-based).
+ * @param index The index within the sector (0-based).
+ * @return uint16_t The EEPROM address corresponding to the given sector and
+ * index.
+ */
 uint16_t EEPROM_GetAddress(uint8_t sec, uint16_t index);
+
+/**
+ * @brief Get the sector number corresponding to the given EEPROM address.
+ *
+ * @param addr The EEPROM address.
+ * @return uint8_t The sector number corresponding to the given EEPROM address.
+ */
 uint8_t EEPROM_GetSector(uint16_t addr);
+
+/**
+ * @brief Get the index within a sector corresponding to the given EEPROM
+ * address.
+ *
+ * @param addr The EEPROM address.
+ * @return uint8_t The index within the sector corresponding to the given EEPROM
+ * address.
+ */
 uint8_t EEPROM_GetIndex(uint16_t addr);
 #endif  // EEPROM_ENABLE_GETTERS
 

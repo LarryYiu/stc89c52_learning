@@ -53,8 +53,39 @@
 
 #endif  // SERVO_NUM_DIVISION_TOTAL
 
+/**
+ * @brief This function is the interrupt service routine for Timer0, which is
+ * used to generate the PWM signal for controlling the servo motor. It updates
+ * the divisionOffset and toggles the __SERVO_PIN__ based on the current value
+ * of divisionOffset and pulseWidth to create the appropriate pulse width for
+ * the desired servo angle.
+ *
+ * @note This function should be called in the Timer0 interrupt service
+ * routine to ensure proper timing and functionality of the servo control.
+ *
+ * @warning this function may cause an unexpected behavior, it is recommended to
+ * use the Timer0 interrupt service routine in
+ * __EXAMPLES__/servo_motor/servo_motor_with_uart.c as a reference for
+ * implementing the servo control logic, and to ensure that the timing and pulse
+ * width calculations are consistent with the defined constants and
+ * configurations in this header file.
+ *
+ * @param divisionOffset A pointer to the current division offset, which is
+ * updated in each interrupt to determine the timing of the PWM signal.
+ *
+ * @param pulseWidth A pointer to the current pulse width, which is used to
+ * generate the appropriate PWM signal for the servo motor.
+ */
 void Servo_HandleInterrupt(uint8_t* divisionOffset, const uint8_t* pulseWidth);
 
+/**
+ * @brief This function updates the pulse width based on the desired servo angle
+ * provided as an input parameter.
+ *
+ * @param degree A pointer to the desired servo angle in degrees.
+ * @param pulseWidth A pointer to the pulse width variable, which will be
+ * updated based on the desired servo angle.
+ */
 void Servo_UpdatePulseWidth(int16_t* degree, uint8_t* pulseWidth);
 
 #endif  // __SERVO_H__

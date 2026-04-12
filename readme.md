@@ -45,7 +45,7 @@ This board has 2 pieces of digital tube allows displaying 3 digits each, 6 in to
 The code for controlling the digital tube (`DRIVER/DigitalTube.h`) supports an integer input with a maximum of 16 bits, in addition to floating point numbers but uses a fixed point representation with 2 decimal places since the chip does not support floating point operations. 
 
 ## Matrix Led
-The board has a 8x8 matrix LED display, driven by 2 74HC573 latch chips serially for row and column selection, row -> column. The code for controlling the matrix LED supports displaying a 8x8 bitmap, which can be used to display characters or simple graphics. `DRIVER/MatrixLED.h`. Also see example of displaying a rolling number in `__EXAMPLES__\matrix_led_with_74hc595`.
+The board has a 8x8 matrix LED display, driven by 2 74HC595 latch chips serially for row and column selection, row -> column. The code for controlling the matrix LED supports displaying a 8x8 bitmap, which can be used to display characters or simple graphics. `DRIVER/MatrixLED.h`. Also see example of displaying a rolling number in `__EXAMPLES__\matrix_led_with_74hc595`.
 
 ![Matrix LED](./_res_readme/matrix_led.png "Matrix LED")
 
@@ -109,4 +109,4 @@ The MCU does not have a dedicated I2C module, so a software simulated I2C protoc
 
 The example of using I2C to read data from a sensor is located in `__EXAMPLES__\traffic_light`, which reads data from a BMP280 pressure and temperature sensor and displays it on the digital tube. 
 
-For more detail of this project, please refer to [`TrafficLight`](__EXAMPLES__\trafic_light\description.md).
+For more detail of this project, please refer to [`TrafficLight`](__EXAMPLES__/traffic_light/description.md).
