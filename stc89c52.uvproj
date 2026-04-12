@@ -391,30 +391,30 @@
               <FileType>5</FileType>
               <FilePath>.\APP\config.h</FilePath>
             </File>
+            <File>
+              <FileName>TrafficLight.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\APP\TrafficLight.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>DRIVER</GroupName>
           <Files>
             <File>
+              <FileName>i2c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\DRIVER\i2c.c</FilePath>
+            </File>
+            <File>
+              <FileName>TM1650.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\DRIVER\TM1650.c</FilePath>
+            </File>
+            <File>
               <FileName>Key.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\DRIVER\Key.c</FilePath>
-            </File>
-            <File>
-              <FileName>DS18B20.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\DRIVER\DS18B20.c</FilePath>
-            </File>
-            <File>
-              <FileName>MatrixLed.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\DRIVER\MatrixLed.c</FilePath>
-            </File>
-            <File>
-              <FileName>Uart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\DRIVER\Uart.c</FilePath>
             </File>
           </Files>
         </Group>
